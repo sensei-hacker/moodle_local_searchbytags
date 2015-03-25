@@ -21,13 +21,6 @@ require_once($CFG->dirroot . '/question/editlib.php');
 
 class local_searchbytags_question_bank_column extends core_question\bank\column_base {
 
-    /*
-    public function __construct($caller) {
-        parent::__construct($caller);
-        $this->caller = get_class($caller);
-    }
-    */
-
     protected function get_classes() {
         $classes = $this->get_extra_classes();
         $classes[] = get_class($this);
