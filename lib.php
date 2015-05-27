@@ -37,6 +37,11 @@ class local_searchbytags_question_bank_search_condition extends core_question\ba
     protected $params;
 
     public function __construct() {
+        global $PAGE;
+        global $CFG;
+        if ($CFG->debug) {
+            $PAGE->requires->yui_module('moodle-local_searchbytags-allowmultiple', 'M.local_searchbytags.allowmultiple.init');
+        }
         $this->tags = optional_param_array('tags', array(), PARAM_TEXT);
         if ( (!empty($this->tags)) && $this->tags[0] == null) {
             array_shift($this->tags);
@@ -66,7 +71,7 @@ class local_searchbytags_question_bank_search_condition extends core_question\ba
         $tags = $this->get_tags_used();
         $attr = array (
                           'multiple' => 'true',
-                          'class' => 'searchoptions large'
+                          'class' => 'searchoptions large searchbytags'
                       );
         if (count($tags) > 10) {
             $attr['size'] = 10;

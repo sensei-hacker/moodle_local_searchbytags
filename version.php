@@ -14,9 +14,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-$plugin->version   = 2014012900;
+$plugin->version   = 2015052700;
 $plugin->release   = '2.2.7';
-$plugin->maturity  = MATURITY_ALPHA;
+$plugin->maturity  = MATURITY_BETA;
 $plugin->requires  = 2011120500;
 $plugin->component = 'local_searchbytags';
 
