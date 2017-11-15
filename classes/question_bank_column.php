@@ -46,17 +46,20 @@ class local_searchbytags_question_bank_column extends core_question\bank\column_
     }
 
     public function get_required_fields() {
-        // For mssql.
-        return array("(SELECT tag.name + ', ' FROM {tag} tag 
-                               LEFT JOIN {tag_instance} tagi ON tag.id=tagi.tagid 
-                                WHERE tagi.itemid=q.id FOR XML PATH('')) AS tags");
-
-        // For MySQL.
-        /*
-        return array("
-            (SELECT GROUP_CONCAT(name) AS tags FROM mdl_tag_instance LEFT JOIN mdl_tag ON mdl_tag.id=mdl_tag_instance.tagid WHERE itemid=q.id) as tags
-        ");
-        */
+        switch($CFG->dbtype) {
+            case 'sqlsrv':
+            case 'mssql':
+                return array("(SELECT tag.name + ', ' FROM {tag} tag 
+                              LEFT JOIN {tag_instance} tagi ON tag.id=tagi.tagid 
+                              WHERE tagi.itemid=q.id FOR XML PATH('')) AS tags");
+            case 'psql':
+                return array("(SELECT STRING_AGG(name, ', ') AS tags FROM (SELECT t.name FROM {tag} t LEFT_JOIN {tag_instance} ti ON t.id = ti.tagid WHERE ti.itemid = q.id ORDER BY t.name) AS name)");
+            case 'mysqli':
+            case 'mariadb':
+                return array("(SELECT GROUP_CONCAT(name) AS tags FROM {tag_instance} ti LEFT JOIN {tag} t ON t.id = ti.tagid WHERE itemid = q.id)");
+            default:
+                die("Don't know how to handle dbtype '$CFG->dbtype'");
+        }
     }
 }
 
